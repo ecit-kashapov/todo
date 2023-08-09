@@ -1,0 +1,64 @@
+<div class="todo-container">
+  <div *ngIf="!todos?.length">
+    Your Todo List is Empty!
+  </div>
+
+  <ul class="list-group" *ngIf="todos?.length">
+    <li class="list-group-item todo-item" *ngFor="let todo of todos">
+      <div class="row">
+        <div class="col-xs-12 d-flex justify-content-between">
+          <ng-container *ngIf="todo.id !== editingTodoId; else editMode">
+            <span [class.completed]="todo.status === 'done'">{{this.todo.title}}</span>
+          </ng-container>
+          <ng-template #editMode>
+            <ng-container *ngIf="todo.id === editingTodoId">
+              <input [(ngModel)]="todo.title">
+            </ng-container>
+          </ng-template>
+          <span [class.green]="todo.status === 'done'">
+            status: {{this.todo.status}}
+          </span>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-12 d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-success btn-sm"
+            (click)="completeTodo(this.todo.id)"
+            [disabled]="this.todo.status === 'done'"
+          >Complete</button>
+
+          <ng-container *ngIf="todo.id !== editingTodoId; else editModeActions">
+            <button
+              type="button"
+              class="btn btn-warning btn-sm"
+              (click)="editTodo(this.todo.id)"
+              [disabled]="this.todo.status === 'done'"
+            >Edit</button>
+          </ng-container>
+          <ng-template #editModeActions>
+            <ng-container *ngIf="todo.id === editingTodoId">
+              <div class="col-xs-12 d-flex justify-content-between">
+                <button
+                  type="button"
+                  class="btn btn-warning btn-sm"
+                  (click)="editTodo(null)"
+                >Save</button>
+              </div>
+            </ng-container>
+          </ng-template>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="deleteTodo(this.todo.id)"
+          >Delete</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <app-new-todo-form (addTodo)="addTodo($event)"></app-new-todo-form>
+</div>

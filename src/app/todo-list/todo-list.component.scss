@@ -1,0 +1,19 @@
+.todo-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .todo-item {
+    min-width: 500px;
+  }
+
+  .completed {
+    text-decoration: line-through;
+    color: green;
+  }
+
+  .green {
+    color: green;
+  }
+}
