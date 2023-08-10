@@ -1,4 +1,4 @@
-@import '../../../scss/variables.scss';
+@use 'src/scss/_variables.scss' as vars;
 
 .todo-container {
   display: flex;
@@ -12,10 +12,10 @@
 
   .completed {
     text-decoration: line-through;
-    color: $green-color;
+    color: vars.$green-color;
   }
 
   .green {
-    color: $green-color;
+    color: vars.$green-color;
   }
 }

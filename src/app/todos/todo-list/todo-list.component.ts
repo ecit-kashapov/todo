@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { TodoService } from '../todo.service';
@@ -12,59 +12,62 @@ import { Todo, TodoStatus } from '../todo.model';
 })
 export class TodoListComponent implements OnInit, OnDestroy {
   todos: Todo[] = [];
-  // @ts-ignore
-  subscription: Subscription;
-  // @ts-ignore
+  subscriptionTodoChanges: Subscription;
   titleForm: FormGroup;
   editingTodoId: string | null = null;
   readonly TodoStatus = TodoStatus;
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
-    this.subscription = this.todoService.todosChanged
+    this.subscribeToTodoChanges();
+    this.fetchTodos();
+  }
+
+  private initForm() {
+    this.titleForm = this.formBuilder.group({
+      title: ['']
+    })
+  }
+
+  private subscribeToTodoChanges() {
+    this.subscriptionTodoChanges = this.todoService.todosChanged
       .subscribe(
         (updatedTodos: Todo[]) => {
           this.todos = updatedTodos;
         }
       );
-    this.todos = this.todoService.getTodos();
   }
 
-  private initForm() {
-    const title = '';
-
-    this.titleForm = new FormGroup({
-      'title': new FormControl(title),
-    });
+  private fetchTodos() {
+    this.todos = this.todoService.getTodos();
   }
 
   onEditTodo(id: string) {
     this.editingTodoId = id;
-
-    if (id) {
-      const todo = this.todoService.getTodo(id);
+    const todo = this.todoService.getTodo(id);
+    if (id && todo) {
       this.titleForm.get('title')!.setValue(todo.title);
     }
   }
 
   onSaveTodo() {
-    if (this.editingTodoId) {
-      const todoToUpdate = this.todoService.getTodo(this.editingTodoId);
+    if (!this.editingTodoId) return
 
-      if (todoToUpdate) {
-        const updatedTitle = this.titleForm.value.title;
+    const todoToUpdate = this.todoService.getTodo(this.editingTodoId);
 
-        this.todoService.updateTodo(this.editingTodoId, {
-          ...todoToUpdate,
-          title: updatedTitle
-        })
-      }
+    if (todoToUpdate) {
+      const updatedTitle = this.titleForm.value.title;
 
-      this.editingTodoId = null;
-      this.initForm();
+      this.todoService.updateTodo(this.editingTodoId, {
+        ...todoToUpdate,
+        title: updatedTitle
+      })
     }
+
+    this.editingTodoId = null;
+    this.initForm();
   }
 
   onCompleteTodo(id: string) {
@@ -83,6 +86,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptionTodoChanges.unsubscribe();
   }
 }

@@ -20,13 +20,8 @@ export class TodoService {
 
   constructor() {}
 
-  // @ts-ignore
-  getTodo(id: string): Todo {
-    const todo = this.todos.find(todo => todo.id === id);
-
-    if (todo) {
-      return todo;
-    }
+  getTodo(id: string): Todo | undefined {
+    return this.todos.find(todo => todo.id === id);
   }
 
   getTodos(): Todo[] {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { TodoService } from '../todo.service';
 import { TodoStatus } from '../todo.model';
@@ -10,10 +10,9 @@ import { TodoStatus } from '../todo.model';
   styleUrls: ['./new-todo-form.component.scss']
 })
 export class NewTodoFormComponent implements OnInit {
-  // @ts-ignore
   todoForm: FormGroup;
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
@@ -25,14 +24,10 @@ export class NewTodoFormComponent implements OnInit {
   }
 
   private initForm() {
-    const id = Date.now().toString();
-    const title = '';
-    const status = TodoStatus.Backlog;
-
-    this.todoForm = new FormGroup({
-      'id': new FormControl(id),
-      'title': new FormControl(title),
-      'status': new FormControl(status),
-    });
+    this.todoForm = this.formBuilder.group({
+      id: [Date.now().toString],
+      title: [''],
+      status: [TodoStatus.Backlog]
+    })
   }
 }
