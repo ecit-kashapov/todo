@@ -8,15 +8,17 @@
       <div class="row">
         <div class="col-xs-12 d-flex justify-content-between">
           <ng-container *ngIf="todo.id !== editingTodoId; else editMode">
-            <span [class.completed]="todo.status === 'done'">{{this.todo.title}}</span>
+            <span [class.completed]="todo.status === TodoStatus.Done">{{todo.title}}</span>
           </ng-container>
           <ng-template #editMode>
             <ng-container *ngIf="todo.id === editingTodoId">
-              <input [(ngModel)]="todo.title">
+              <div [formGroup]="titleForm">
+                <input formControlName="title" name="title">
+              </div>
             </ng-container>
           </ng-template>
-          <span [class.green]="todo.status === 'done'">
-            status: {{this.todo.status}}
+          <span [class.green]="todo.status === TodoStatus.Done">
+            status: {{todo.status}}
           </span>
         </div>
       </div>
@@ -26,16 +28,16 @@
           <button
             type="button"
             class="btn btn-success btn-sm"
-            (click)="completeTodo(this.todo.id)"
-            [disabled]="this.todo.status === 'done'"
+            (click)="onCompleteTodo(todo.id)"
+            [disabled]="todo.status === TodoStatus.Done || editingTodoId"
           >Complete</button>
 
           <ng-container *ngIf="todo.id !== editingTodoId; else editModeActions">
             <button
               type="button"
               class="btn btn-warning btn-sm"
-              (click)="editTodo(this.todo.id)"
-              [disabled]="this.todo.status === 'done'"
+              (click)="onEditTodo(todo.id)"
+              [disabled]="todo.status === TodoStatus.Done"
             >Edit</button>
           </ng-container>
           <ng-template #editModeActions>
@@ -44,7 +46,7 @@
                 <button
                   type="button"
                   class="btn btn-warning btn-sm"
-                  (click)="editTodo(null)"
+                  (click)="onSaveTodo()"
                 >Save</button>
               </div>
             </ng-container>
@@ -53,12 +55,13 @@
           <button
             type="button"
             class="btn btn-danger btn-sm"
-            (click)="deleteTodo(this.todo.id)"
+            (click)="onDeleteTodo(todo.id)"
+            [disabled]="editingTodoId"
           >Delete</button>
         </div>
       </div>
     </li>
   </ul>
 
-  <app-new-todo-form (addTodo)="addTodo($event)"></app-new-todo-form>
+  <app-new-todo-form></app-new-todo-form>
 </div>

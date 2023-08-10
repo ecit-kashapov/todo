@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
 
+import { TodoService } from './todos/todo.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { TodoListComponent } from './todo-list/todo-list.component';
-import { NewTodoFormComponent } from './new-todo-form/new-todo-form.component';
+import { TodoListComponent } from './todos/todo-list/todo-list.component';
+import { NewTodoFormComponent } from './todos/new-todo-form/new-todo-form.component';
 
 @NgModule({
   declarations: [
@@ -20,9 +21,10 @@ import { NewTodoFormComponent } from './new-todo-form/new-todo-form.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [TodoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
