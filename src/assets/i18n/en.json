@@ -1,0 +1,10 @@
+{
+  "app-title": "Angular TODO app",
+  "btn-todo-add": "Add Todo",
+  "empty-list": " Your Todo List is Empty! ",
+  "todo-status": "status: {{ value }}",
+  "btn-todo-complete": "Complete",
+  "btn-todo-edit": "Edit",
+  "btn-todo-save": "Save",
+  "btn-todo-delete": "Delete"
+}

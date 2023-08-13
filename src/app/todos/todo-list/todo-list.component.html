@@ -1,6 +1,6 @@
 <div class="todo-container">
   <div *ngIf="!todos?.length">
-    Your Todo List is Empty!
+    {{ 'empty-list' | translate }}
   </div>
 
   <ul class="list-group" *ngIf="todos?.length">
@@ -18,7 +18,7 @@
             </ng-container>
           </ng-template>
           <span [class.green]="todo.status === TodoStatus.Done">
-            status: {{todo.status}}
+            {{ 'todo-status' | translate : { value: todo.status } }}
           </span>
         </div>
       </div>
@@ -30,7 +30,7 @@
             class="btn btn-success btn-sm"
             (click)="onCompleteTodo(todo.id)"
             [disabled]="todo.status === TodoStatus.Done || editingTodoId"
-          >Complete</button>
+          >{{ 'btn-todo-complete' | translate }}</button>
 
           <ng-container *ngIf="todo.id !== editingTodoId; else editModeActions">
             <button
@@ -38,7 +38,7 @@
               class="btn btn-warning btn-sm"
               (click)="onEditTodo(todo.id)"
               [disabled]="todo.status === TodoStatus.Done"
-            >Edit</button>
+            >{{ 'btn-todo-edit' | translate }}</button>
           </ng-container>
           <ng-template #editModeActions>
             <ng-container *ngIf="todo.id === editingTodoId">
@@ -47,7 +47,7 @@
                   type="button"
                   class="btn btn-warning btn-sm"
                   (click)="onSaveTodo()"
-                >Save</button>
+                >{{ 'btn-todo-save' | translate }}</button>
               </div>
             </ng-container>
           </ng-template>
@@ -57,7 +57,7 @@
             class="btn btn-danger btn-sm"
             (click)="onDeleteTodo(todo.id)"
             [disabled]="editingTodoId"
-          >Delete</button>
+          >{{ 'btn-todo-delete' | translate }}</button>
         </div>
       </div>
     </li>

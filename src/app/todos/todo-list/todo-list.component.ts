@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { TodoService } from '../todo.service';
-import { Todo, TodoStatus } from '../todo.model';
+import { ITodo, TodoStatus } from '../todo.model';
 
 @Component({
   selector: 'app-todo-list',
@@ -11,7 +11,7 @@ import { Todo, TodoStatus } from '../todo.model';
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit, OnDestroy {
-  todos: Todo[] = [];
+  todos: ITodo[] = [];
   subscriptionTodoChanges: Subscription;
   titleForm: FormGroup;
   editingTodoId: string | null = null;
@@ -19,32 +19,34 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   constructor(private todoService: TodoService, private formBuilder: FormBuilder) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initForm();
     this.subscribeToTodoChanges();
     this.fetchTodos();
   }
 
-  private initForm() {
+  private initForm(): void {
     this.titleForm = this.formBuilder.group({
       title: ['']
     })
   }
 
-  private subscribeToTodoChanges() {
+  private subscribeToTodoChanges(): void {
     this.subscriptionTodoChanges = this.todoService.todosChanged
       .subscribe(
-        (updatedTodos: Todo[]) => {
+        (updatedTodos: ITodo[]) => {
           this.todos = updatedTodos;
         }
       );
   }
 
-  private fetchTodos() {
-    this.todos = this.todoService.getTodos();
+  private fetchTodos(): void {
+    this.todoService.getTodos().subscribe((todos) =>{
+      this.todos = todos;
+    });
   }
 
-  onEditTodo(id: string) {
+  onEditTodo(id: string): void {
     this.editingTodoId = id;
     const todo = this.todoService.getTodo(id);
     if (id && todo) {
@@ -52,7 +54,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveTodo() {
+  onSaveTodo(): void {
     if (!this.editingTodoId) return
 
     const todoToUpdate = this.todoService.getTodo(this.editingTodoId);
@@ -70,7 +72,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.initForm();
   }
 
-  onCompleteTodo(id: string) {
+  onCompleteTodo(id: string): void {
     const todoToUpdate = this.todoService.getTodo(id);
 
     if (todoToUpdate) {
@@ -81,11 +83,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteTodo(id: string) {
+  onDeleteTodo(id: string): void {
     this.todoService.deleteTodo(id);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptionTodoChanges.unsubscribe();
   }
 }

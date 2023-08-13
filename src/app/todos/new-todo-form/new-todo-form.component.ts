@@ -14,18 +14,18 @@ export class NewTodoFormComponent implements OnInit {
 
   constructor(private todoService: TodoService, private formBuilder: FormBuilder) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initForm();
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.todoService.addTodo(this.todoForm.value);
     this.initForm();
   }
 
-  private initForm() {
+  private initForm(): void {
     this.todoForm = this.formBuilder.group({
-      id: [Date.now().toString],
+      id: [Date.now().toString()],
       title: [''],
       status: [TodoStatus.Backlog]
     })

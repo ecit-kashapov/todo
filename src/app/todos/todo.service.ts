@@ -1,39 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 
-import { Todo, TodoStatus } from './todo.model';
+import { ITodo, TodoStatus } from './todo.model';
 
 @Injectable()
 export class TodoService {
-  todosChanged = new Subject<Todo[]>();
+  todosChanged: Subject<ITodo[]> = new Subject<ITodo[]>();
 
-  private todos: Todo[] = [
-    new Todo( '1', 'Install Angular', TodoStatus.Done),
-    new Todo( '2', 'Add Edit TODO title', TodoStatus.Done),
-    new Todo( '3', 'Create basic TODO app', TodoStatus.InProgress),
-    new Todo( '4', 'Change UI from Bootstrap to Angular material', TodoStatus.Backlog),
-    new Todo( '5', 'Make UI like microsoft TODO app', TodoStatus.Backlog),
-    new Todo( '6', 'Add Edit TODO title', TodoStatus.Backlog),
-    new Todo( '7', 'Add Firebase API', TodoStatus.Backlog),
-    new Todo( '8', 'Add Drag-n-drop status columns', TodoStatus.Backlog),
+  private todos: ITodo[] = [
+    { id: '1', title: 'Install Angular', status: TodoStatus.Done },
+    { id: '2', title: 'Add Edit TODO title', status: TodoStatus.Done },
+    { id: '3', title: 'Create basic TODO app', status: TodoStatus.InProgress },
+    { id: '4', title: 'Change UI from Bootstrap to Angular material', status: TodoStatus.Backlog },
+    { id: '5', title: 'Make UI like microsoft TODO app', status: TodoStatus.Backlog },
+    { id: '6', title: 'Add Edit TODO title', status: TodoStatus.Backlog },
+    { id: '7', title: 'Add Firebase API', status: TodoStatus.Backlog },
+    { id: '8', title: 'Add Drag-n-drop status columns', status: TodoStatus.Backlog },
   ];
 
   constructor() {}
 
-  getTodo(id: string): Todo | undefined {
+  getTodo(id: string): ITodo | undefined {
     return this.todos.find(todo => todo.id === id);
   }
 
-  getTodos(): Todo[] {
-    return [...this.todos];
+  getTodos(): Observable<ITodo[]> {
+    return of(this.todos);
   }
 
-  addTodo(todo: Todo): void {
+  addTodo(todo: ITodo): void {
     this.todos.push(todo);
     this.notifyTodosChanged();
   }
 
-  updateTodo(id: string, newTodo: Todo): void {
+  updateTodo(id: string, newTodo: ITodo): void {
     const index = this.todos.findIndex(todo => todo.id === id);
     if (index !== -1) {
       this.todos[index] = newTodo;

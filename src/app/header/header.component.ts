@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +8,11 @@ import { Component } from '@angular/core';
 })
 
 export class HeaderComponent {
-  title = 'Angular ToDo App'
+  title: string;
+
+  constructor(private translateService: TranslateService) {
+    this.translateService.get('app-title').subscribe((translation: string) => {
+      this.title = translation;
+    });
+  }
 }

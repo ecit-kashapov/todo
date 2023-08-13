@@ -5,14 +5,8 @@ export enum TodoStatus {
   None = '',
 }
 
-export class Todo {
-  public id: string;
-  public title: string;
-  public status: TodoStatus;
-
-  constructor(id: string, title: string, status: TodoStatus) {
-    this.id = id;
-    this.title = title;
-    this.status = status;
-  }
+export interface ITodo {
+  id: string;
+  title: string;
+  status: TodoStatus;
 }

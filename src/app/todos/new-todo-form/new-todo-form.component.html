@@ -1,4 +1,4 @@
 <div class="mt-4 justify-content-between form" [formGroup]="todoForm">
   <input class="" type="text" id="title" formControlName="title" name="title" required>
-  <button class="btn btn-primary" (click)="onSubmit()">Add Todo</button>
+  <button class="btn btn-primary" (click)="onSubmit()">{{ 'btn-todo-add' | translate }}</button>
 </div>
