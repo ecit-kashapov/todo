@@ -1,0 +1,5 @@
+<div class="columns-container">
+  <app-todo-column [columnName]="TodoStatus.Backlog" [todos]="getFilteredTodos(TodoStatus.Backlog)"></app-todo-column>
+  <app-todo-column [columnName]="TodoStatus.InProgress" [todos]="getFilteredTodos(TodoStatus.InProgress)"></app-todo-column>
+  <app-todo-column [columnName]="TodoStatus.Done" [todos]="getFilteredTodos(TodoStatus.Done)"></app-todo-column>
+</div>

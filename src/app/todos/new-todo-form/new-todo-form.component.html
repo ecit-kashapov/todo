@@ -1,4 +1,19 @@
-<div class="mt-4 justify-content-between form" [formGroup]="todoForm">
-  <input class="" type="text" id="title" formControlName="title" name="title" required>
-  <button class="btn btn-primary" (click)="onSubmit()">{{ 'btn-todo-add' | translate }}</button>
+<div class="form" [formGroup]="todoForm">
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="{{ 'enter-todo-placeholder' | translate }}"
+      formControlName="title"
+      name="title"
+      required />
+  </mat-form-field>
+  <button
+    class="btn"
+    mat-flat-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="!todoForm.value.title"
+  >
+    {{ 'btn-todo-add' | translate }}
+  </button>
 </div>

@@ -5,13 +5,24 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 import { TodoService } from './todos/todo.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { TodoListComponent } from './todos/todo-list/todo-list.component';
 import { NewTodoFormComponent } from './todos/new-todo-form/new-todo-form.component';
+import { TodoColumnComponent } from "./todos/todo-column/todo-column.component";
+import { TodosComponent } from "./todos/todos.component";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -21,8 +32,9 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HeaderComponent,
-    TodoListComponent,
     NewTodoFormComponent,
+    TodosComponent,
+    TodoColumnComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +43,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatListModule,
+    MatDividerModule,
+    MatChipsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
@@ -38,7 +59,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       }
-    })
+    }),
+    BrowserAnimationsModule
   ],
   providers: [TodoService],
   bootstrap: [AppComponent]

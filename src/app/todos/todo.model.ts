@@ -1,8 +1,7 @@
 export enum TodoStatus {
-  Backlog = 'backlog',
-  InProgress = 'in-progress',
-  Done = 'done',
-  None = '',
+  Backlog = 'Backlog',
+  InProgress = 'InProgress',
+  Done = 'Done',
 }
 
 export interface ITodo {

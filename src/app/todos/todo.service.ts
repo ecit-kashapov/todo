@@ -8,17 +8,10 @@ export class TodoService {
   todosChanged: Subject<ITodo[]> = new Subject<ITodo[]>();
 
   private todos: ITodo[] = [
-    { id: '1', title: 'Install Angular', status: TodoStatus.Done },
     { id: '2', title: 'Add Edit TODO title', status: TodoStatus.Done },
     { id: '3', title: 'Create basic TODO app', status: TodoStatus.InProgress },
     { id: '4', title: 'Change UI from Bootstrap to Angular material', status: TodoStatus.Backlog },
-    { id: '5', title: 'Make UI like microsoft TODO app', status: TodoStatus.Backlog },
-    { id: '6', title: 'Add Edit TODO title', status: TodoStatus.Backlog },
-    { id: '7', title: 'Add Firebase API', status: TodoStatus.Backlog },
-    { id: '8', title: 'Add Drag-n-drop status columns', status: TodoStatus.Backlog },
   ];
-
-  constructor() {}
 
   getTodo(id: string): ITodo | undefined {
     return this.todos.find(todo => todo.id === id);

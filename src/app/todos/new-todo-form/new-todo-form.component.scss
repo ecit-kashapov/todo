@@ -1,4 +1,16 @@
 .form {
   display: flex;
-  width: 300px;
+  justify-content: center;
+  margin-top: 20px;
+
+  mat-form-field {
+    width: 400px;
+  }
+
+  .btn {
+    margin-left: 16px;
+    height: 56px;
+  }
 }
+
+

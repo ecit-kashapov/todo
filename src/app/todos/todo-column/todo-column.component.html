@@ -1,0 +1,72 @@
+<mat-card class="column-card">
+  <mat-card-title>{{ translatedColumnName }}</mat-card-title>
+  <mat-card-content>
+    <div *ngIf="!todos?.length" class="no-content">
+      {{ 'empty-list' | translate }}
+    </div>
+    <mat-list *ngIf="todos?.length">
+      <mat-card *ngFor="let todo of todos">
+        <mat-card-content>
+          <ng-container *ngIf="todo.id !== editingTodoId; else editMode">
+            <div class="todo-name" [class.completed]="todo.status === TodoStatus.Done">{{todo.title}}</div>
+          </ng-container>
+          <ng-template #editMode>
+            <ng-container *ngIf="todo.id === editingTodoId">
+              <mat-form-field [formGroup]="titleForm">
+                <input
+                  matInput
+                  formControlName="title"
+                  name="title"
+                  required />
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+          <mat-form-field>
+            <mat-select [(value)]="todo.status" [disabled]="!!editingTodoId">
+              <mat-option
+                *ngFor="let status of getKeys(TodoStatus)"
+                [value]="status"
+                (click)="onUpdateStatusTodo(todo.id, parseTodoStatus(status))"
+              >
+                {{ status }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="actions">
+            <ng-container *ngIf="todo.id !== editingTodoId; else editModeActions">
+              <button
+                mat-button
+                color="primary"
+                (click)="onEditTodo(todo.id)"
+                [disabled]="todo.status === TodoStatus.Done"
+              >
+                {{ 'btn-todo-edit' | translate }}
+              </button>
+            </ng-container>
+            <ng-template #editModeActions>
+              <ng-container *ngIf="todo.id === editingTodoId">
+                <button
+                  mat-button
+                  color="primary"
+                  (click)="onSaveTodo()"
+                >
+                  {{ 'btn-todo-save' | translate }}
+                </button>
+              </ng-container>
+            </ng-template>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDeleteTodo(todo.id)"
+              [disabled]="!!editingTodoId"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
