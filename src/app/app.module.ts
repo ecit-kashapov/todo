@@ -24,6 +24,7 @@ import { NewTodoFormComponent } from './todos/new-todo-form/new-todo-form.compon
 import { TodoColumnComponent } from "./todos/todo-column/todo-column.component";
 import { TodosComponent } from "./todos/todos.component";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -54,6 +55,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSelectModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    DragDropModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
@@ -62,7 +64,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       }
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CdkDropList
   ],
   providers: [TodoService],
   bootstrap: [AppComponent]

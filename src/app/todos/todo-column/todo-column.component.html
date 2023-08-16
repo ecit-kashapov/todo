@@ -9,7 +9,7 @@
         {{ 'empty-list' | translate }}
       </div>
       <mat-list *ngIf="todos?.length">
-        <mat-card *ngFor="let todo of todos">
+        <mat-card *ngFor="let todo of todos" cdkDrag>
           <mat-card-content>
             <ng-container *ngIf="todo.id !== editingTodoId; else editMode">
               <div class="todo-name" [class.completed]="todo.status === TodoStatus.Done">{{todo.title}}</div>
