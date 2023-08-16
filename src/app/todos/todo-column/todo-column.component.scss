@@ -1,6 +1,8 @@
 @use 'src/scss/_variables.scss' as vars;
 
 .column-card {
+  min-height: 70vh;
+
   mat-card-title {
     text-align: center;
     border-bottom: 1px solid vars.$light-gray;
@@ -30,5 +32,10 @@
 
   .mdc-card {
     margin-bottom: 16px;
+  }
+
+  mat-spinner {
+    max-width: 30px;
+    margin: 0 auto;
   }
 }

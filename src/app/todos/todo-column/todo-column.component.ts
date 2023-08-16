@@ -21,6 +21,10 @@ export class TodoColumnComponent implements OnInit {
 
   constructor(private translate: TranslateService, private todoService: TodoService, private formBuilder: FormBuilder) {}
 
+  get isFetching(): boolean {
+    return this.todoService.isFetching;
+  }
+
   getKeys(obj: any): string[] { return Object.keys(obj); }
 
   parseTodoStatus(status: string): TodoStatus {
@@ -56,7 +60,7 @@ export class TodoColumnComponent implements OnInit {
     if (todoToUpdate) {
       const updatedTitle = this.titleForm.value.title;
 
-      this.todoService.updateTodo(this.editingTodoId, {
+      this.todoService.updateTodoFB(this.editingTodoId, {
         ...todoToUpdate,
         title: updatedTitle
       })
@@ -70,7 +74,7 @@ export class TodoColumnComponent implements OnInit {
     const todoToUpdate = this.todoService.getTodo(id);
 
     if (todoToUpdate) {
-      this.todoService.updateTodo(id, {
+      this.todoService.updateTodoFB(id, {
         ...todoToUpdate,
         status: newStatus
       })
@@ -78,6 +82,6 @@ export class TodoColumnComponent implements OnInit {
   }
 
   onDeleteTodo(id: string): void {
-    this.todoService.deleteTodo(id);
+    this.todoService.deleteTodoFB(id);
   }
 }

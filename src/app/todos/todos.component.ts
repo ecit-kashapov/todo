@@ -18,7 +18,8 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscribeToTodoChanges();
-    this.fetchTodos();
+    // this.fetchTodos();
+    this.todoService.fetchTodosFB();
   }
 
   private subscribeToTodoChanges(): void {
@@ -30,11 +31,11 @@ export class TodosComponent implements OnInit, OnDestroy {
       );
   }
 
-  private fetchTodos(): void {
-    this.todoService.getTodos().subscribe((todos) =>{
-      this.todos = todos;
-    });
-  }
+  // private fetchTodos(): void {
+  //   this.todoService.getTodos().subscribe((todos) =>{
+  //     this.todos = todos;
+  //   });
+  // }
 
   getFilteredTodos(todoStatus: TodoStatus): ITodo[] {
     return this.todos.filter(todo => todo.status === todoStatus);

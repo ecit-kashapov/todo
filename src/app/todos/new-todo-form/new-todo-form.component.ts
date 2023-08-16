@@ -19,7 +19,8 @@ export class NewTodoFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.todoService.addTodo(this.todoForm.value);
+    // this.todoService.addTodo(this.todoForm.value);
+    this.todoService.addTodoFB(this.todoForm.value);
     this.initForm();
   }
 

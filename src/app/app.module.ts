@@ -23,6 +23,7 @@ import { HeaderComponent } from './header/header.component';
 import { NewTodoFormComponent } from './todos/new-todo-form/new-todo-form.component';
 import { TodoColumnComponent } from "./todos/todo-column/todo-column.component";
 import { TodosComponent } from "./todos/todos.component";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -52,6 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatInputModule,
     MatSelectModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
