@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { TodoService } from '../todo.service';
@@ -11,6 +11,8 @@ import { TodoStatus } from '../todo.model';
 })
 export class NewTodoFormComponent implements OnInit {
   todoForm: FormGroup;
+  @Output() setIsFetching: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() getTodos: EventEmitter<void> = new EventEmitter();
 
   constructor(private todoService: TodoService, private formBuilder: FormBuilder) {}
 
@@ -19,8 +21,12 @@ export class NewTodoFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // this.todoService.addTodo(this.todoForm.value);
-    this.todoService.addTodoFB(this.todoForm.value);
+    this.setIsFetching.emit(true);
+    this.todoService.addTodoFB(this.todoForm.value)
+      .subscribe(() => {
+        this.setIsFetching.emit(false);
+        this.getTodos.emit();
+      });
     this.initForm();
   }
 

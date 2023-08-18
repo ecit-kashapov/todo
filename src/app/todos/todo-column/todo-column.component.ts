@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { concatMap, finalize } from 'rxjs';
 
 import { TodoService } from '../todo.service';
 import { ITodo, TodoStatus } from '../todo.model';
@@ -13,6 +14,11 @@ import { ITodo, TodoStatus } from '../todo.model';
 export class TodoColumnComponent implements OnInit {
   @Input() columnName: TodoStatus;
   @Input() todos:ITodo[] = [];
+  @Input() isTodoFetching:boolean = false;
+
+  @Output() setIsFetching: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() setTodos: EventEmitter<ITodo[]> = new EventEmitter<ITodo[]>();
+  @Output() getTodos: EventEmitter<void> = new EventEmitter();
 
   titleForm: FormGroup;
   translatedColumnName: string;
@@ -21,10 +27,6 @@ export class TodoColumnComponent implements OnInit {
 
   constructor(private translate: TranslateService, private todoService: TodoService, private formBuilder: FormBuilder) {}
 
-  get isFetching(): boolean {
-    return this.todoService.isFetching;
-  }
-
   getKeys(obj: any): string[] { return Object.keys(obj); }
 
   parseTodoStatus(status: string): TodoStatus {
@@ -32,9 +34,7 @@ export class TodoColumnComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.translate.get(this.columnName).subscribe((translation: string) => {
-      this.translatedColumnName = translation;
-    });
+    this.initTranslate();
     this.initForm();
   }
 
@@ -44,44 +44,87 @@ export class TodoColumnComponent implements OnInit {
     })
   }
 
+  private initTranslate(): void {
+    this.translate.get(this.columnName).subscribe((translation: string) => {
+      this.translatedColumnName = translation;
+    });
+  }
+
   onEditTodo(id: string): void {
     this.editingTodoId = id;
-    const todo = this.todoService.getTodo(id);
+    const todo: ITodo | undefined = this.getTodo(id);
     if (id && todo) {
       this.titleForm.get('title')!.setValue(todo.title);
     }
   }
 
-  onSaveTodo(): void {
-    if (!this.editingTodoId) return
+  getTodo(id: string): ITodo | undefined {
+    return this.todos.find(todo => todo.id === id);
+  }
 
-    const todoToUpdate = this.todoService.getTodo(this.editingTodoId);
+  onSaveTodoO(): void {
+    if (!this.editingTodoId) return;
 
-    if (todoToUpdate) {
-      const updatedTitle = this.titleForm.value.title;
+    const todoToUpdate = this.getTodo(this.editingTodoId);
+    if (!todoToUpdate) return;
 
-      this.todoService.updateTodoFB(this.editingTodoId, {
+    const updatedTitle = this.titleForm.value.title;
+
+    this.setIsFetching.emit(true);
+    this.todoService
+      .updateTodoFB(this.editingTodoId, {
         ...todoToUpdate,
-        title: updatedTitle
+        title: updatedTitle,
       })
-    }
+      .pipe(
+        finalize(() => this.setIsFetching.emit(false)),
+        concatMap(() => this.todoService.fetchTodosFB())
+      )
+      .subscribe({
+        next: (todos: ITodo[]) => {
+          this.setTodos.emit(todos);
+        },
+        error: (error) => {
+          this.todoService.openSnackBar(error.message, 'OK');
+        },
+      });
 
     this.editingTodoId = null;
     this.initForm();
   }
 
   onUpdateStatusTodo(id: string, newStatus: TodoStatus): void {
-    const todoToUpdate = this.todoService.getTodo(id);
+    const todoToUpdate: ITodo | undefined = this.getTodo(id);
+    if (!todoToUpdate) return
 
-    if (todoToUpdate) {
-      this.todoService.updateTodoFB(id, {
-        ...todoToUpdate,
-        status: newStatus
+    this.setIsFetching.emit(true)
+    this.todoService.updateTodoFB(id, {
+      ...todoToUpdate,
+      status: newStatus
+    }).pipe(
+        finalize(() => this.isTodoFetching = false)
+      ).subscribe({
+        next: () => {
+          this.getTodos.emit()
+        },
+        error: (error) => {
+          this.todoService.openSnackBar(error.message, 'OK');
+        },
       })
-    }
   }
 
   onDeleteTodo(id: string): void {
-    this.todoService.deleteTodoFB(id);
+    this.setIsFetching.emit(true)
+    this.todoService.deleteTodoFB(id)
+      .pipe(
+        finalize(() => this.isTodoFetching = false)
+      ).subscribe({
+      next: () => {
+        this.getTodos.emit()
+      },
+      error: (error) => {
+        this.todoService.openSnackBar(error.message, 'OK');
+      },
+    })
   }
 }

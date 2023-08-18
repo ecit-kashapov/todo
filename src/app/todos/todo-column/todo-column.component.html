@@ -1,10 +1,10 @@
 <mat-card class="column-card">
   <mat-card-title>{{ translatedColumnName }}</mat-card-title>
   <mat-card-content>
-    <div *ngIf="isFetching">
+    <div *ngIf="isTodoFetching">
       <mat-spinner></mat-spinner>
     </div>
-    <div *ngIf="!isFetching">
+    <div *ngIf="!isTodoFetching">
       <div *ngIf="!todos?.length" class="no-content">
         {{ 'empty-list' | translate }}
       </div>
@@ -54,7 +54,7 @@
                   <button
                     mat-button
                     color="primary"
-                    (click)="onSaveTodo()"
+                    (click)="onSaveTodoO()"
                   >
                     {{ 'btn-todo-save' | translate }}
                   </button>

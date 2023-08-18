@@ -19,13 +19,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { TodoService } from './todos/todo.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { NewTodoFormComponent } from './todos/new-todo-form/new-todo-form.component';
 import { TodoColumnComponent } from './todos/todo-column/todo-column.component';
-import { TodosComponent } from './todos/todos.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -36,7 +34,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HeaderComponent,
     NewTodoFormComponent,
-    TodosComponent,
     TodoColumnComponent,
   ],
   imports: [
@@ -69,7 +66,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     CdkDropList
   ],
-  providers: [TodoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
