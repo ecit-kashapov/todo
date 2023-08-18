@@ -15,16 +15,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { TodoService } from './todos/todo.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { NewTodoFormComponent } from './todos/new-todo-form/new-todo-form.component';
-import { TodoColumnComponent } from "./todos/todo-column/todo-column.component";
-import { TodosComponent } from "./todos/todos.component";
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
+import { TodoColumnComponent } from './todos/todo-column/todo-column.component';
+import { TodosComponent } from './todos/todos.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -56,6 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatIconModule,
     MatProgressSpinnerModule,
     DragDropModule,
+    MatSnackBarModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {

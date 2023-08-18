@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment'; // Adjust the path as needed
 import { ITodo } from './todo.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface ResponseData {
   [key: string]: ITodo;
@@ -16,9 +17,9 @@ export class TodoService {
 
   private todos: ITodo[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,  private _snackBar: MatSnackBar) {}
 
-  fetchTodosFB() {
+  fetchTodosFB(): void {
     this.isFetching = true;
     this.http
       .get<ResponseData>(`${environment.firebaseUrl}/todos.json`)
@@ -37,7 +38,14 @@ export class TodoService {
         this.todos = todos;
         this.notifyTodosChanged();
         this.isFetching = false;
+      }, (error) => {
+        this.openSnackBar(error.message, 'OK');
+        this.isFetching = false;
       })
+  }
+
+  openSnackBar(message: string, action: string): void {
+    this._snackBar.open(message, action);
   }
 
   getTodo(id: string): ITodo | undefined {
@@ -57,7 +65,13 @@ export class TodoService {
     this.isFetching = true;
     this.http
       .post<ITodo>(`${environment.firebaseUrl}/todos.json`, todo)
-      .subscribe(() => { this.fetchTodosFB() })
+      .subscribe(() => {
+        this.fetchTodosFB()
+      },
+(error) => {
+        this.openSnackBar(error.message, 'OK');
+        this.isFetching = false;
+      })
   }
 
   // updateTodo(id: string, newTodo: ITodo): void {
@@ -72,7 +86,13 @@ export class TodoService {
     this.isFetching = true;
     this.http
       .put<ITodo>(`${environment.firebaseUrl}/todos/${id}.json`, newTodo)
-      .subscribe(() => { this.fetchTodosFB() });
+      .subscribe(() => {
+        this.fetchTodosFB()
+      },
+(error) => {
+        this.openSnackBar(error.message, 'OK');
+        this.isFetching = false;
+      });
   }
 
   // deleteTodo(id: string): void {
@@ -87,7 +107,13 @@ export class TodoService {
     this.isFetching = true;
     this.http
       .delete<ITodo>(`${environment.firebaseUrl}/todos/${id}.json`)
-      .subscribe(() => { this.fetchTodosFB() })
+      .subscribe(() => {
+        this.fetchTodosFB()
+      },
+(error) => {
+        this.openSnackBar(error.message, 'OK');
+        this.isFetching = false;
+      })
   }
 
   private notifyTodosChanged(): void {

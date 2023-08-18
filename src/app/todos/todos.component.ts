@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subscription } from 'rxjs';
 
 import { TodoService } from './todo.service';
 import { ITodo, TodoStatus } from './todo.model';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-todos',
@@ -15,7 +15,9 @@ export class TodosComponent implements OnInit, OnDestroy {
   subscriptionTodoChanges: Subscription;
   readonly TodoStatus = TodoStatus;
 
-  drop(event: CdkDragDrop<ITodo[]>) {
+  constructor(private todoService: TodoService) {}
+
+  drop(event: CdkDragDrop<ITodo[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -28,8 +30,6 @@ export class TodosComponent implements OnInit, OnDestroy {
       })
     }
   }
-
-  constructor(private todoService: TodoService) {}
 
   ngOnInit(): void {
     this.subscribeToTodoChanges();
