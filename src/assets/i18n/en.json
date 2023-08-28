@@ -1,0 +1,22 @@
+{
+  "app-title": "Angular TODO app",
+  "btn-todo-add": "Add Todo",
+  "enter-todo-placeholder": "Enter your todo",
+  "empty-list": " List is empty ",
+  "todo-status": "status: {{ value }}",
+  "btn-todo-complete": "Complete",
+  "btn-todo-edit": "Edit",
+  "btn-todo-save": "Save",
+  "btn-todo-delete": "Delete",
+  "Backlog": "Backlog",
+  "InProgress": "In progress",
+  "Done": "Done",
+  "login": "Login",
+  "signup": "Sign Up",
+  "logout": "Logout",
+  "todos": "Todos",
+  "password": "Password",
+  "email": "Email",
+  "switchToLogin": "Switch to Login",
+  "switchToSignup": "Switch to Sign Up"
+}

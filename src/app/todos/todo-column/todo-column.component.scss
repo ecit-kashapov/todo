@@ -1,0 +1,43 @@
+@use 'src/scss/_variables.scss' as vars;
+
+.column-card {
+  min-height: 70vh;
+  min-width: 280px;
+
+  mat-card-title {
+    text-align: center;
+    border-bottom: 1px solid vars.$light-gray;
+    margin-bottom: 16px;
+    padding: 4px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .todo-name {
+    margin-bottom: 16px;
+  }
+
+  .no-content {
+    text-align: center;
+  }
+
+  .actions {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -16px;
+  }
+
+  .mdc-card {
+    cursor: move;
+    margin-bottom: 16px;
+  }
+
+  mat-spinner {
+    max-width: 30px;
+    margin: 0 auto;
+  }
+}

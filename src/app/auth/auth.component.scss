@@ -1,0 +1,25 @@
+mat-card {
+  width: 400px;
+  margin: 16px auto;
+
+  h3 {
+    text-align: center;
+  }
+
+  .form {
+    flex-direction: column;
+    display: flex;
+
+    .btn:first-of-type {
+      margin-bottom: 16px;
+    }
+
+    mat-spinner {
+      margin: 8px auto 14px;
+      max-width: 30px;
+      max-height: 30px;
+    }
+  }
+}
+
+
