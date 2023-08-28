@@ -1,0 +1,49 @@
+<mat-card>
+  <mat-card-content>
+    <h3>
+      {{ isLoginMode ? ('login' | translate) : ('signup' | translate) }}
+    </h3>
+    <div class="form" [formGroup]="authForm">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="{{ 'email' | translate }}"
+          formControlName="email"
+          name="email"
+          required
+          email
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="{{ 'password' | translate }}"
+          formControlName="password"
+          name="password"
+          required
+          minlength="6"
+        />
+      </mat-form-field>
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <button
+        mat-flat-button
+        class="btn"
+        color="primary"
+        (click)="onSubmit()"
+        [disabled]="authForm.status === 'INVALID'"
+        *ngIf="!isLoading"
+      >
+        {{ isLoginMode ?  ('login' | translate) : ('signup' | translate) }}
+      </button>
+      <button
+        class="btn"
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="onSwitchMode()"
+      >
+        {{ isLoginMode ?  ('switchToSignup' | translate) : ('switchToLogin' | translate) }}
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

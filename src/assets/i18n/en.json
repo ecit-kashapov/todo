@@ -10,5 +10,13 @@
   "btn-todo-delete": "Delete",
   "Backlog": "Backlog",
   "InProgress": "In progress",
-  "Done": "Done"
+  "Done": "Done",
+  "login": "Login",
+  "signup": "Sign Up",
+  "logout": "Logout",
+  "todos": "Todos",
+  "password": "Password",
+  "email": "Email",
+  "switchToLogin": "Switch to Login",
+  "switchToSignup": "Switch to Sign Up"
 }

@@ -1,3 +1,23 @@
 <mat-toolbar color="primary" class="header">
   <span>{{ title }}</span>
+  <button [matMenuTriggerFor]="menu" mat-icon-button class="example-icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLinkActive="active" routerLink="/auth" *ngIf="!isAuth">
+      {{ 'login' | translate }}
+    </button>
+    <button mat-menu-item routerLinkActive="active" routerLink="/todos" *ngIf="isAuth">
+      {{ 'todos' | translate }}
+    </button>
+    <button
+      mat-menu-item
+      routerLinkActive="active"
+      routerLink="/auth"
+      *ngIf="isAuth"
+      (click)="onLogout()"
+    >
+      {{ 'logout' | translate }}
+    </button>
+  </mat-menu>
 </mat-toolbar>

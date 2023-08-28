@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,21 +18,27 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { TodosComponent } from './todos/todos.component';
 import { NewTodoFormComponent } from './todos/new-todo-form/new-todo-form.component';
 import { TodoColumnComponent } from './todos/todo-column/todo-column.component';
+import { AuthComponent } from './auth/auth.component';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
-export function HttpLoaderFactory(http: HttpClient) {
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
 }
 
 @NgModule({
   declarations: [
     AppComponent,
+    AuthComponent,
     HeaderComponent,
+    TodosComponent,
     NewTodoFormComponent,
     TodoColumnComponent,
   ],
@@ -55,6 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatProgressSpinnerModule,
     DragDropModule,
     MatSnackBarModule,
+    MatMenuModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
@@ -66,6 +73,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     CdkDropList
   ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
